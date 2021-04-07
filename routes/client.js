@@ -32,7 +32,7 @@ module.exports = {
             })
         
         .catch((err)=>{
-            res.json({msg:"The email does not exist"})
+            res.status(404).json({msg:"The email does not exist"})
         })        
     },
 
@@ -49,7 +49,7 @@ module.exports = {
                     email,
                     password: hash
                 }).then(()=>{
-                    res.json({msg: "Resgistered user"})
+                    res.status(201).json({msg: "Resgistered user"})
                    
                 })  
             }else{
@@ -86,22 +86,36 @@ module.exports = {
         })   
     },
     delete:(req, res)=>{
-        var id = req.params.id;
-        Client.destroy({
-            where:{
-                id:id
-            }
-        }).then(()=>{
-            res.sendStatus(200);
-        })
+        var id =req.params.id;          
+        if(isNaN(id)){
+            res.sendStatus(400);
+        }else{
+            Client.destroy({
+                where:{
+                    id:id
+                }
+            }).then(()=>{
+                res.sendStatus(200);
+            })
+        }        
     },
     put:(req, res)=>{
         var id = req.params.id;
-        var {name, age} = req.body;    
-     
-        Client.update({name:name, age:age}, {where:{id:id}}).then(()=>{
-            res.sendStatus(201)
-
-        })
+        var {name, age} = req.body; 
+        if(isNaN(id)){  
+            res.sendStatus(400);
+        }else{        
+            Client.findOne({where:{id:id}})
+            .then((user)=>{
+                if(user !== null){             
+                    Client.update({name:name, age:age}, {where:{id:id}})
+                    .then(()=>{
+                        res.sendStatus(201)        
+                    });
+                }else{
+                    res.status(404).json({msg:"The client does not exist"});
+                }           
+            })            
+        }
     }
 };

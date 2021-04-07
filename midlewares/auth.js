@@ -8,7 +8,7 @@ module.exports = (req, res, next)=>{
     if(req.path !== "/auth" && req.path !== "/register"){
         const authToken = req.headers['authorization'];
         if(!authToken){
-            res.json({
+            res.status(401).json({
                 msg:"Not authorized",
                 linkAuthorization:"http://127.0.0.1:3000/register"
             })
@@ -16,7 +16,7 @@ module.exports = (req, res, next)=>{
         const token = authToken.split(" ")[1];   
         JWT.verify(token, JWTSecret, (err, data)=>{
             if(err){
-                res.json({
+                res.status(401).json({
                     msg:"Not authorized"
                 })
             }else{
@@ -27,7 +27,7 @@ module.exports = (req, res, next)=>{
                     next()
                 })
                 .catch(()=>{
-                    res.json({
+                    res.status(404).json({
                         msg:"Not registered"
                     })
                 })

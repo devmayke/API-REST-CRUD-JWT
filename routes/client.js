@@ -74,14 +74,22 @@ module.exports = {
         })   
     },
     getOne:(req, res)=>{
-        var id = req.params.id;       
-        Client.findOne({
-            where:{
-                id:id
-            }
-        }).then(client=>{
-            res.json(client);            
-        })   
+        var id = req.params.id;  
+        if(isNaN(id)){  
+            res.sendStatus(400);
+        }else{  
+            Client.findOne({
+                where:{
+                    id:id
+                }
+            }).then(client=>{
+                if(client !== null){
+                    res.status(200).json(client); 
+                }else{
+                    res.status(404).json({msg:"The client does not exist"});
+                }
+            }) 
+        }  
     },
     delete:(req, res)=>{
         var id =req.params.id;          

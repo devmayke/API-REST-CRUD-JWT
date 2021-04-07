@@ -56,7 +56,7 @@ module.exports = (req, res, next)=>{
                 console.log(data)
                 var {email} = data;
                 UserAPI.findOne({where:{email:email}})
-                then(()=>{
+                .then(()=>{
                     next()
                 })
                 .catch(()=>{

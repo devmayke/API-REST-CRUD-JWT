@@ -9,21 +9,54 @@ module.exports = (req, res, next)=>{
         const authToken = req.headers['authorization'];
         if(!authToken){
             res.status(401).json({
-                msg:"Not authorized",
-                linkAuthorization:"http://127.0.0.1:3000/register"
+                msg:"NOT AUTHORIZED!",
+                miniDocAPI:{
+                    InfoRegister:{
+                        linkAuthorization:"http://127.0.0.1:3000/register",
+                        formatRegister:{
+                            name: "xxxxxxxxxxx",
+                            email: "xxxxxxxxxx",
+                            password: "xxxxxxx"
+                        }
+                    },
+                    InfoAuth:{
+                        linkAuth:"http://127.0.0.1:3000/auth",
+                        formatAuth:{
+                            email: "xxxxxxxxxx",
+                            password: "xxxxxxx"
+                        }
+                    }
+                }
             })
         }
         const token = authToken.split(" ")[1];   
         JWT.verify(token, JWTSecret, (err, data)=>{
             if(err){
                 res.status(401).json({
-                    msg:"Not authorized"
+                    msg:"NOT AUTHORIZED!",
+                    miniDocAPI:{
+                        InfoRegister:{
+                            linkAuthorization:"http://127.0.0.1:3000/register",
+                            formatRegister:{
+                                name: "xxxxxxxxxxx",
+                                email: "xxxxxxxxxx",
+                                password: "xxxxxxx"
+                            }
+                        },
+                        InfoAuth:{
+                            linkAuth:"http://127.0.0.1:3000/auth",
+                            formatAuth:{
+                                email: "xxxxxxxxxx",
+                                password: "xxxxxxx"
+                            }
+                        }
+                    }
                 })
             }else{
                 console.log(data)
                 var {email} = data;
                 UserAPI.findOne({where:{email:email}})
-                .then(()=>{
+                then(()=>{
                     next()
                 })
                 .catch(()=>{

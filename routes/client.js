@@ -26,11 +26,9 @@ module.exports = {
                     }
                 })                 
                 }else{
-                    res.json({msg:"Invalid password"})
-                    
+                    res.json({msg:"Invalid password"});                    
                 }
-            })
-        
+            })        
         .catch((err)=>{
             res.status(404).json({msg:"The email does not exist"})
         })        

@@ -6,15 +6,15 @@ const connection = require("./database");
 const UserAPI = connection.define("user", {
     name:{
         type:Sequelize.STRING,
-        aloowNull:false
+        allowNull:false
     },
     email:{
         type:Sequelize.STRING,
-        aloowNull:false
+        allowNull:false
     },
     password:{
         type:Sequelize.STRING,
-        aloowNull:false
+        allowNull:false
     },
 })
 

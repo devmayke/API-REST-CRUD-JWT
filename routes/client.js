@@ -10,8 +10,8 @@ module.exports = {
         let {email, password} = req.body;
         UserAPI.findOne({raw:true,where:{email:email}})
         .then((user)=>{
-            let correctPassword = bcrypt.compareSync(password, user.password);
-            if(correctPassword){
+            // let correctPassword = bcrypt.compareSync(password, user.password);
+            if(user.password){
                 JWT.sign({email:email}, JWTSecret, {
                     expiresIn:"1h"
                 }, (err, token)=>{
@@ -36,8 +36,8 @@ module.exports = {
 
     postRegister:(req, res)=>{
         var {name, email, password} = req.body;
-        var salt = bcrypt.genSaltSync(10);
-        var hash = bcrypt.hashSync(password, salt)
+        // var salt = bcrypt.genSaltSync(10);
+        // var hash = bcrypt.hashSync(password, salt)
 
         UserAPI.findOne({where:{email:email}}).then((user)=>{
 
@@ -45,7 +45,7 @@ module.exports = {
                 UserAPI.create({
                     name,
                     email,
-                    password: hash
+                    password: password
                 }).then(()=>{
                     res.status(201).json({msg: "Resgistered user"})
                    

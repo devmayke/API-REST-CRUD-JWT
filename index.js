@@ -1,6 +1,6 @@
 const express= require("express");
 const app = express();
-const PORT = 3000;
+const PORT = 5000;
 const bodyParser = require("body-parser");
 const connection = require("./models/database");
 const client = require("./routes/routes");
@@ -32,6 +32,6 @@ app.use("/", auth, client);
 
 
 
-app.listen(PORT, ()=>{
+app.listen(6000, ()=>{
     console.log("Running server...")
 });
